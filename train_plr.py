@@ -24,6 +24,7 @@ cross_val_scores = cross_val_score(lr, X_poly, y, scoring="r2", cv=10)
 print(cross_val_scores.mean())
 
 # 0.845107255337558
+# 
 
 dump(lr, "reg_plr2.joblib")
 
