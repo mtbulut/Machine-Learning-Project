@@ -2,31 +2,32 @@
 from joblib import load
 from preprocess import prep_data
 import pandas as pd
-from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import PolynomialFeatures
 
 def predict_from_csv(path_to_csv):
 
     df = pd.read_csv(path_to_csv)
     X, y = prep_data(df)
- 
-    reg = load("reg_plr2.joblib")
 
+    reg = load("reg.joblib")
     predictions = reg.predict(X)
 
     return predictions
 
+
 if __name__ == "__main__":
-    ho_predictions = predict_from_csv("fish_holdout_demo.csv")
+    df = pd.read_csv("fish_holdout.csv")
+    X, ho_truth = prep_data(df)
+
+    pl = PolynomialFeatures(degree=2)
+    X = pl.fit_transform(X)
+
+    reg = load("reg.joblib")
+    ho_predictions = reg.predict(X)
+
     print(ho_predictions)
+    print(ho_truth)
 
-
-#####
-
-## WE WRITE THIS ###
-
-    ho_truth = pd.read_csv("fish_holdout_demo.csv")["Weight"].values
-    # print(ho_truth)
-    ho_mse = r2_score(ho_truth, ho_predictions)
+    ho_mse = mean_squared_error(ho_truth, ho_predictions)
     print(ho_mse)
-#####
-
