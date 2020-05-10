@@ -17,13 +17,13 @@ def predict_from_csv(path_to_csv):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("fish_holdout.csv")
+    df = pd.read_csv("fish_holdout_demo.csv")
     X, ho_truth = prep_data(df)
 
     pl = PolynomialFeatures(degree=2)
     X = pl.fit_transform(X)
 
-    reg = load("reg.joblib")
+    reg = load("reg_plr2.joblib")
     ho_predictions = reg.predict(X)
 
     print(ho_predictions)
